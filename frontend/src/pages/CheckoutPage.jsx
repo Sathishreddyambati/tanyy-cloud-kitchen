@@ -4,16 +4,8 @@ import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { ArrowLeft, ShieldCheck, Truck } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
-import { saveOrder, reserveOrderNumber } from '@/lib/firebase';
+import { saveOrder } from '@/lib/firebase';
 import { WHATSAPP_NUMBER } from '@/data/menu';
-
-const PAYMENTS = [
-  { id: 'cod', label: 'Cash on Delivery' },
-  { id: 'gpay', label: 'Google Pay' },
-  { id: 'phonepe', label: 'PhonePe' },
-  { id: 'paytm', label: 'Paytm' },
-  { id: 'upi', label: 'UPI' },
-];
 
 const FIELDS = [
   { name: 'name', label: 'Full Name', required: true },
@@ -28,37 +20,54 @@ const FIELDS = [
   { name: 'pincode', label: 'Pincode', required: true, pattern: /^\d{6}$/, hint: '6-digit pincode' },
 ];
 
+function generateOrderNumber() {
+  // TK + 6-digit timestamp tail — collision-safe within same second is fine for demo scale
+  const t = Date.now().toString().slice(-6);
+  return `TK${t}`;
+}
+
 function buildWhatsAppMessage({ orderNumber, form, items, subtotal }) {
+  const address = [form.house, form.street, form.area, form.landmark && `Near ${form.landmark}`, form.city, form.state, form.pincode]
+    .filter(Boolean).join(', ');
+  const cp = (n) => String.fromCodePoint(n);
+  const E = {
+    alert:   cp(0x1F6A8), // 🚨
+    receipt: cp(0x1F9FE), // 🧾
+    person:  cp(0x1F464), // 👤
+    phone:   cp(0x1F4DE), // 📞
+    pin:     cp(0x1F4CD), // 📍
+    pushpin: cp(0x1F4CC), // 📌
+    cart:    cp(0x1F6D2), // 🛒
+    money:   cp(0x1F4B0), // 💰
+    card:    cp(0x1F4B3), // 💳
+    memo:    cp(0x1F4DD), // 📝
+    rupee:   cp(0x20B9),  // ₹
+    times:   cp(0x00D7),  // ×
+  };
   const lines = [];
-  lines.push('🍽️ *TANYY CLOUD KITCHEN*');
+  lines.push(`*New Order* ${E.alert}`);
+  lines.push(`${E.receipt} Order ID: ${orderNumber}`);
+  lines.push(`${E.person} Name: ${form.name}`);
+  lines.push(`${E.phone} Phone: ${form.phone}${form.altPhone ? ` / ${form.altPhone}` : ''}`);
+  lines.push(`${E.pin} Address: ${address}`);
+  lines.push(`${E.pushpin} Map: Not Provided`);
   lines.push('');
-  lines.push(`*Order Number:* ${orderNumber}`);
-  lines.push(`*Customer:* ${form.name}`);
-  lines.push(`*Phone:* ${form.phone}`);
-  if (form.altPhone) lines.push(`*Alt Phone:* ${form.altPhone}`);
+  lines.push(`${E.cart} Items:`);
+  items.forEach((i) => lines.push(`- ${i.name} ${E.times} ${i.qty} = ${E.rupee}${i.price * i.qty}`));
   lines.push('');
-  lines.push(`*Address:*`);
-  lines.push(`${form.house}, ${form.street}, ${form.area}${form.landmark ? ` (Near ${form.landmark})` : ''}`);
-  lines.push(`${form.city}, ${form.state} - ${form.pincode}`);
-  lines.push('');
-  lines.push('*Items:*');
-  items.forEach((i) => lines.push(`• ${i.qty} × ${i.name} — ₹${i.qty * i.price}`));
-  lines.push('');
-  lines.push(`*Subtotal:* ₹${subtotal}`);
-  lines.push(`*Delivery:* FREE`);
-  lines.push(`*Grand Total:* ₹${subtotal}`);
-  lines.push('');
-  lines.push(`*Payment:* ${PAYMENTS.find((p) => p.id === form.payment)?.label || form.payment}`);
-  if (form.notes) lines.push(`*Notes:* ${form.notes}`);
-  lines.push('');
-  lines.push('Thank You ❤️');
+  lines.push(`${E.money} Total: ${E.rupee}${subtotal}`);
+  lines.push(`${E.card} Payment: Cash on Delivery`);
+  if (form.notes) {
+    lines.push('');
+    lines.push(`${E.memo} Notes: ${form.notes}`);
+  }
   return encodeURIComponent(lines.join('\n'));
 }
 
 export default function CheckoutPage() {
   const { items, subtotal, clear } = useCart();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ payment: 'cod', notes: '' });
+  const [form, setForm] = useState({ notes: '' });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -71,49 +80,63 @@ export default function CheckoutPage() {
       if (f.required && !v) next[f.name] = `${f.label} is required`;
       else if (v && f.pattern && !f.pattern.test(v)) next[f.name] = f.hint || 'Invalid format';
     }
-    if (!form.payment) next.payment = 'Select a payment method';
     setErrors(next);
     return Object.keys(next).length === 0;
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if (items.length === 0) { toast.error('Your cart is empty'); return; }
     if (!validate()) { toast.error('Please fill all required fields correctly'); return; }
     setSubmitting(true);
-    try {
-      const orderNumber = await reserveOrderNumber();
-      const orderData = {
-        orderNumber,
-        status: 'Pending',
-        customer: {
-          name: form.name, phone: form.phone, altPhone: form.altPhone || '',
-        },
-        address: {
-          house: form.house, street: form.street, area: form.area, landmark: form.landmark || '',
-          city: form.city, state: form.state, pincode: form.pincode,
-        },
-        items: items.map((i) => ({ id: i.id, name: i.name, price: i.price, qty: i.qty, lineTotal: i.price * i.qty })),
-        subtotal,
-        deliveryCharge: 0,
-        grandTotal: subtotal,
-        payment: PAYMENTS.find((p) => p.id === form.payment)?.label || 'Cash on Delivery',
-        notes: form.notes || '',
-        estimatedDelivery: '35–45 min',
-      };
-      try { await saveOrder(orderData); } catch (err) { console.warn('Order save failed:', err?.message); }
 
-      const msg = buildWhatsAppMessage({ orderNumber, form, items, subtotal });
-      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-      window.open(waUrl, '_blank');
-      clear();
-      navigate(`/success?order=${orderNumber}`);
-    } catch (err) {
-      console.error(err);
-      toast.error('Something went wrong. Please try again.');
-    } finally {
-      setSubmitting(false);
+    // 1. Generate order number synchronously (no async — critical for popup unblocking)
+    const orderNumber = generateOrderNumber();
+
+    // 2. Build the WhatsApp URL synchronously
+    const msg = buildWhatsAppMessage({ orderNumber, form, items, subtotal });
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+
+    // 3. Open WhatsApp IMMEDIATELY (still inside the user-gesture click) so mobile browsers
+    //    do NOT treat it as a blocked popup. Use window.location for the most reliable mobile
+    //    deep-link into the WhatsApp app.
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+    // 4. Snapshot the order and fire it off to Firestore in the background (non-blocking)
+    const orderData = {
+      orderNumber,
+      status: 'Pending',
+      customer: { name: form.name, phone: form.phone, altPhone: form.altPhone || '' },
+      address: {
+        house: form.house, street: form.street, area: form.area, landmark: form.landmark || '',
+        city: form.city, state: form.state, pincode: form.pincode,
+      },
+      items: items.map((i) => ({ id: i.id, name: i.name, price: i.price, qty: i.qty, lineTotal: i.price * i.qty })),
+      subtotal,
+      deliveryCharge: 0,
+      grandTotal: subtotal,
+      payment: 'Cash on Delivery',
+      notes: form.notes || '',
+      estimatedDelivery: '35–45 min',
+    };
+    saveOrder(orderData).catch(() => {});
+
+    // 5. Clear cart and stash a WhatsApp URL for the success page to auto-retrigger
+    clear();
+    try { sessionStorage.setItem('tanyy_last_wa', waUrl); } catch (_) {}
+
+    if (isMobile) {
+      // Push /success into history so the browser back-button from WhatsApp lands on the success page.
+      try { window.history.pushState({}, '', `/success?order=${orderNumber}`); } catch (_) {}
+      // Same-tab redirect — the ONLY reliable way to open the WhatsApp app on mobile.
+      window.location.href = waUrl;
+      return;
     }
+
+    // Desktop: open WhatsApp Web in a new tab (still inside the click handler → allowed)
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+    navigate(`/success?order=${orderNumber}`);
+    setSubmitting(false);
   };
 
   return (
@@ -149,17 +172,14 @@ export default function CheckoutPage() {
 
           <div>
             <div className="text-[11px] uppercase tracking-widest text-[color:var(--tk-text-soft)] mb-2">Payment Method</div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {PAYMENTS.map((p) => (
-                <button type="button" key={p.id} data-testid={`payment-${p.id}`} onClick={() => setField('payment', p.id)} className={`rounded-xl border px-4 py-3 text-sm transition ${form.payment === p.id ? 'border-[color:var(--tk-accent)] bg-[color:var(--tk-accent)]/10 text-[color:var(--tk-accent)]' : 'border-[color:var(--tk-border)] hover:border-[color:var(--tk-accent)]/60'}`}>
-                  {p.label}
-                </button>
-              ))}
+            <div className="rounded-xl border border-[color:var(--tk-accent)] bg-[color:var(--tk-accent)]/10 px-5 py-4 text-sm text-[color:var(--tk-accent)] flex items-center gap-3" data-testid="payment-cod">
+              <Truck size={16} /> Cash on Delivery
+              <span className="ml-auto text-[11px] tracking-widest uppercase opacity-70">Selected</span>
             </div>
           </div>
 
           <motion.button whileTap={{ scale: 0.98 }} disabled={submitting} type="submit" data-testid="place-order-btn" className="tk-btn-primary w-full rounded-full py-4 text-sm uppercase tracking-widest font-medium disabled:opacity-60">
-            {submitting ? 'Placing Order…' : 'Place Order via WhatsApp'}
+            {submitting ? 'Opening WhatsApp…' : 'Place Order via WhatsApp'}
           </motion.button>
           <div className="text-[11px] text-[color:var(--tk-text-soft)] flex items-center gap-2"><ShieldCheck size={12} className="text-[color:var(--tk-accent)]" /> Your details are used only to fulfil your order.</div>
         </form>
