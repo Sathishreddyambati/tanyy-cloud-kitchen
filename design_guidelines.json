@@ -1,0 +1,131 @@
+{
+  "theme_strategy": {
+    "primary_theme": "Dark Green + Cream + Gold",
+    "style": "Luxury Restaurant, Cinematic, Editorial Restraint, High-end E-commerce",
+    "mood": "Premium, appetizing, trustworthy, luxurious homestyle",
+    "dark_light_toggle_required": true
+  },
+  "typography": {
+    "fonts": {
+      "heading": "'Playfair Display', serif",
+      "body": "'Outfit', sans-serif"
+    },
+    "hierarchy": {
+      "h1": "text-5xl sm:text-6xl md:text-7xl tracking-tighter leading-none font-bold font-serif",
+      "h2": "text-3xl sm:text-4xl md:text-5xl tracking-tight leading-tight font-serif",
+      "h3": "text-xl sm:text-2xl tracking-tight font-serif",
+      "h4": "text-lg sm:text-xl font-medium",
+      "body": "text-base md:text-lg leading-relaxed tracking-normal font-sans",
+      "eyebrow": "text-xs sm:text-sm uppercase tracking-[0.2em] font-bold text-[#D4AF37]"
+    },
+    "instructions": "Import Google Fonts 'Playfair Display' and 'Outfit' in index.css. Apply font-serif to all headings and font-sans to body. Never use Inter for headings."
+  },
+  "colors": {
+    "dark_mode": {
+      "background": "#09281E",
+      "surface": "#0C3C2D",
+      "surface_glass": "rgba(12, 60, 45, 0.6)",
+      "primary": "#D4AF37",
+      "primary_hover": "#F3CE5A",
+      "text_primary": "#FAF0E6",
+      "text_secondary": "#C8E1D5",
+      "border": "rgba(212, 175, 55, 0.2)",
+      "gradient_overlay": "linear-gradient(to right, #09281E 20%, rgba(9, 40, 30, 0.6) 50%, transparent 100%)"
+    },
+    "light_mode": {
+      "background": "#FAF0E6",
+      "surface": "#FFFFFF",
+      "surface_glass": "rgba(255, 255, 255, 0.7)",
+      "primary": "#09281E",
+      "primary_hover": "#0C3C2D",
+      "accent": "#D4AF37",
+      "text_primary": "#09281E",
+      "text_secondary": "#4A6B5D",
+      "border": "rgba(9, 40, 30, 0.15)",
+      "gradient_overlay": "linear-gradient(to right, #FAF0E6 20%, rgba(250, 240, 230, 0.8) 50%, transparent 100%)"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-opacity-70 border-[1px] shadow-[0_8px_32px_rgba(0,0,0,0.12)]",
+    "shadows": {
+      "ambient": "shadow-[0_0_40px_rgba(212,175,55,0.08)]",
+      "card_hover": "shadow-[0_12px_48px_rgba(212,175,55,0.15)]"
+    },
+    "borders": "Use 1px borders tinted with primary color (Gold in dark mode, Dark Green in light mode) to separate surfaces. Avoid flat muddy shadows.",
+    "corners": "rounded-2xl for luxury cards, rounded-full for buttons and badges."
+  },
+  "components": {
+    "buttons": {
+      "primary": "Pill-shaped (rounded-full). Dark mode: bg-[#D4AF37] text-[#09281E]. Light mode: bg-[#09281E] text-[#D4AF37]. Include scale-105 on hover and subtle ambient glow.",
+      "secondary": "Outline style. border-2 border-[#D4AF37] text-[#D4AF37] (or dark green in light mode) rounded-full. Hover fills background."
+    },
+    "cards": {
+      "menu_card": "Vertical layout. Top half: High-res image (max-h-64 object-cover). Bottom half: Glassmorphic surface, elegant typography, price tag prominently displayed, quantity selector, 'Add to Cart' button. Hover effect: slight lift (-translate-y-2).",
+      "feature_card": "Minimalist bento grid item. Subtle borders, glowing gold accents on hover."
+    },
+    "header": {
+      "style": "Sticky z-50. Use Crystal Glassmorphism. Must have brand logo, navigation links, theme toggle, and cart button with badge."
+    },
+    "cart_drawer": {
+      "style": "Fixed right-0 top-0 h-full w-full max-w-md. Glassmorphic backdrop. Include 'FREE Delivery' badge in gold. Sticky checkout button at the bottom."
+    }
+  },
+  "grids_layouts": {
+    "hero": "min-h-screen, grid grid-cols-1 lg:grid-cols-2 items-center. Left: Typography and CTAs. Right: Massive Cinematic Food Photography.",
+    "features": "Bento Grid Protocol. md:grid-cols-3 or md:grid-cols-4. Asymmetrical spanning to create visual interest. Gaps: gap-6 or gap-8.",
+    "menu": "grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto gap-8 or gap-12."
+  },
+  "motion": {
+    "libraries": "Framer Motion",
+    "effects": {
+      "hero_text": "Staggered fade-up and slight y-translation for h1 and subtitle.",
+      "scroll": "Use Framer Motion 'whileInView' for cards to elegantly fade up as user scrolls.",
+      "cart": "Slide in from right (x: '100%' to x: 0). Background overlay fades in (opacity: 0 to 1).",
+      "micro_interactions": "Button hovers, card lifts, quantity selector scaling on click."
+    }
+  },
+  "accessibility": {
+    "contrast": "Ensure text over images has sufficient contrast by using text shadows or gradient overlays.",
+    "focus": "All interactive elements must have clear focus-visible rings (e.g., focus:ring-2 focus:ring-[#D4AF37]).",
+    "test_ids": "MUST include data-testid attributes on buttons, inputs, cart toggle, and checkout elements."
+  },
+  "media": {
+    "strategy": "Sensory-First Visual Hunger. High-res imagery. Use object-cover. Images must not exceed 80vh on mobile."
+  },
+  "image_urls": {
+    "hero_image": {
+      "url": "https://images.unsplash.com/photo-1710091691771-96b2e6d17dac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAxODF8MHwxfHNlYXJjaHwyfHxjaGlja2VuJTIwY3VycnklMjB3aXRoJTIwcmljZSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwwfHx8fDE3ODQzMDUwOTV8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Chicken curry with yellow rice in a copper bowl. Perfect for the hero section right side or as a full background with heavy overlay."
+    },
+    "menu_item_1": {
+      "url": "https://images.unsplash.com/photo-1710091691802-7dedb8af9a77?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAxODF8MHwxfHNlYXJjaHwxfHxjaGlja2VuJTIwY3VycnklMjB3aXRoJTIwcmljZSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwwfHx8fDE3ODQzMDUwOTV8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Beautifully plated Flavoured Rice with Chicken Curry. Use for Menu Card 1."
+    },
+    "menu_item_2": {
+      "url": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwxfHxjaGlja2VuJTIwY3VycnklMjB3aXRoJTIwZmxhdGJyZWFkJTIwcm90aSUyMGNoYXBhdGklMjBmb29kJTIwcGhvdG9ncmFwaHl8ZW58MHx8fHwxNzg0MzA1MDk1fDA&ixlib=rb-4.1.0&q=85",
+      "description": "Chapati/Roti with Chicken Curry. Use for Menu Card 2."
+    },
+    "texture_bg": {
+      "url": "https://images.pexels.com/photos/7956506/pexels-photo-7956506.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Spices on dark background. Use with low opacity (e.g., 10%) as a texture overlay for sections like Features or Footer."
+    }
+  },
+  "instructions_to_main_agent": [
+    "Implement a premium, cinematic web experience for TANYY CLOUD KITCHEN using React, Vite, Tailwind CSS, and Framer Motion.",
+    "Enforce the Dark Green + Cream + Gold palette. Dark mode should feel like a high-end luxury restaurant. Use the specified hex codes.",
+    "Build the two-item menu layout using large, high-quality luxury cards.",
+    "Develop a full checkout flow within a Cart Drawer or separate Checkout Page that captures all user details and opens WhatsApp with a pre-filled message upon success.",
+    "Implement a hidden Admin panel (e.g., /admin route) interacting with Firebase v12 Firestore to track orders, revenue, and allow CSV export.",
+    "Use Lucide-React for all icons (shopping bag, check circle, phone, map pin).",
+    "Ensure the PWA is installable with a manifest.json and offline support.",
+    "Add Dark/Light mode toggle that correctly switches the Tailwind classes and updates CSS variables."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Do not converge toward generic outputs. Use high contrast, asymmetrical layouts, and generous padding (p-8 to p-16).",
+    "Create depth through layered design elements with z-index hierarchy and glassmorphism.",
+    "NEVER center align the app container. Respect optical alignment.",
+    "Every interaction needs micro-animations - hover states, transitions, entrance animations. No static elements.",
+    "Use sonner for toast notifications.",
+    "Apply `data-testid` to all interactive elements for robust testing."
+  ]
+}
