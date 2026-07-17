@@ -1,56 +1,62 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Toaster } from 'sonner';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import CartDrawer from '@/components/CartDrawer';
+import FloatingButtons from '@/components/FloatingButtons';
+import HomePage from '@/pages/HomePage';
+import MenuPage from '@/pages/MenuPage';
+import CheckoutPage from '@/pages/CheckoutPage';
+import SuccessPage from '@/pages/SuccessPage';
+import ContactPage from '@/pages/ContactPage';
+import AdminLoginPage from '@/pages/AdminLoginPage';
+import AdminDashboardPage from '@/pages/AdminDashboardPage';
+import { CartProvider } from '@/context/CartContext';
+import { ThemeProvider, useTheme } from '@/context/ThemeContext';
+import { AuthProvider } from '@/context/AuthContext';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' }); }, [pathname]);
+  return null;
+}
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
+function AppShell() {
+  const { theme } = useTheme();
   return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
-
-function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-1">
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/menu" element={<MenuPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/admin" element={<AdminLoginPage />} />
+          <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
         </Routes>
-      </BrowserRouter>
+      </main>
+      <Footer />
+      <CartDrawer />
+      <FloatingButtons />
+      <Toaster position="top-right" richColors theme={theme === 'dark' ? 'dark' : 'light'} />
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <AppShell />
+          </BrowserRouter>
+        </CartProvider>
+      </AuthProvider>
+    </ThemeProvider>
+  );
+}

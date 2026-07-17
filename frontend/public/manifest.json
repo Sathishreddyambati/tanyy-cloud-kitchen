@@ -1,0 +1,14 @@
+{
+  "short_name": "TANYY",
+  "name": "TANYY CLOUD KITCHEN",
+  "description": "Homestyle Food, Made with Love",
+  "icons": [
+    { "src": "/images/flavoured-rice.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#09281E",
+  "background_color": "#09281E",
+  "orientation": "portrait"
+}
