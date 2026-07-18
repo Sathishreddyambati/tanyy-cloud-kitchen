@@ -10,6 +10,7 @@ import MenuPage from '@/pages/MenuPage';
 import CheckoutPage from '@/pages/CheckoutPage';
 import SuccessPage from '@/pages/SuccessPage';
 import ContactPage from '@/pages/ContactPage';
+import TrackOrderPage from '@/pages/TrackOrderPage';
 import AdminLoginPage from '@/pages/AdminLoginPage';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import { CartProvider } from '@/context/CartContext';
@@ -34,6 +35,7 @@ function AppShell() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/track/:orderId" element={<TrackOrderPage />} />
           <Route path="/admin" element={<AdminLoginPage />} />
           <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
         </Routes>

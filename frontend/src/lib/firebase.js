@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, doc, addDoc, getDocs, updateDoc, deleteDoc, query, orderBy, serverTimestamp, runTransaction } from 'firebase/firestore';
+import { getFirestore, collection, doc, addDoc, getDocs, updateDoc, deleteDoc, query, orderBy, where, limit, serverTimestamp, runTransaction } from 'firebase/firestore';
 import { getAnalytics, isSupported } from 'firebase/analytics';
 
 const firebaseConfig = {
@@ -71,4 +71,18 @@ export async function updateOrderStatus(id, status) {
 
 export async function removeOrder(id) {
   await deleteDoc(doc(db, 'orders', id));
+}
+
+// Fetch a single order by its orderNumber (TK######) — used by the customer tracking page.
+export async function fetchOrderByNumber(orderNumber) {
+  try {
+    const q = query(collection(db, 'orders'), where('orderNumber', '==', orderNumber), limit(1));
+    const snap = await withTimeout(getDocs(q), 5000);
+    if (snap.empty) return null;
+    const d = snap.docs[0];
+    return { id: d.id, ...d.data() };
+  } catch (e) {
+    console.warn('fetchOrderByNumber fallback:', e?.message);
+    return null;
+  }
 }

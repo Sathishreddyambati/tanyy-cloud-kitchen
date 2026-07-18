@@ -1,6 +1,8 @@
 import Hero from '@/components/Hero';
 import WhyChooseUs from '@/components/WhyChooseUs';
 import MenuSection from '@/components/MenuSection';
+import Testimonials from '@/components/Testimonials';
+import FAQ from '@/components/FAQ';
 import { motion } from 'framer-motion';
 
 export default function HomePage() {
@@ -9,6 +11,7 @@ export default function HomePage() {
       <Hero />
       <WhyChooseUs />
       <MenuSection title="Signature Homestyle Plates" />
+      <Testimonials />
 
       <section className="mx-auto max-w-7xl px-5 sm:px-8 py-20 sm:py-28">
         <div className="tk-card grain relative overflow-hidden p-10 sm:p-16 grid gap-10 lg:grid-cols-2 items-center">
@@ -26,6 +29,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <FAQ />
     </div>
   );
 }

@@ -33,8 +33,15 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-[color:var(--tk-border)]">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-5 text-xs text-[color:var(--tk-text-soft)] flex flex-col sm:flex-row justify-between gap-2">
-          <div>© {new Date().getFullYear()} TANYY CLOUD KITCHEN. All rights reserved.</div>
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-5 text-xs text-[color:var(--tk-text-soft)] flex flex-col sm:flex-row justify-between gap-3 items-start sm:items-center">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+            <div>© {new Date().getFullYear()} TANYY CLOUD KITCHEN. All rights reserved.</div>
+            <div className="hidden sm:block h-3 w-px bg-[color:var(--tk-border)]" />
+            <div data-testid="fssai-badge" className="inline-flex items-center gap-2">
+              <span className="w-4 h-4 rounded-full grid place-items-center bg-[color:var(--tk-accent)]/20 text-[color:var(--tk-accent)] text-[9px] font-bold">✓</span>
+              FSSAI Lic. No. <span className="font-mono text-[color:var(--tk-text)]">22426573000559</span>
+            </div>
+          </div>
           <div className="flex items-center gap-1">Crafted with <Heart size={12} className="text-[color:var(--tk-accent)]" /> in India</div>
         </div>
       </div>

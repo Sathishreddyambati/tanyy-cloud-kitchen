@@ -38,6 +38,14 @@ export default function SuccessPage() {
           </a>
         )}
 
+        <Link
+          to={`/track/${order}`}
+          data-testid="track-order-btn"
+          className="mt-3 tk-btn-outline rounded-full px-6 py-3 text-xs uppercase tracking-widest inline-flex items-center justify-center gap-2 w-full"
+        >
+          Track this Order
+        </Link>
+
         <div className="mt-6 grid grid-cols-2 gap-3">
           <Link to="/menu" data-testid="continue-shopping-btn" className="tk-btn-outline rounded-full py-3 text-xs uppercase tracking-widest inline-flex items-center justify-center gap-2"><ShoppingBag size={14} /> Continue</Link>
           <Link to="/" data-testid="back-home-btn" className="tk-btn-primary rounded-full py-3 text-xs uppercase tracking-widest inline-flex items-center justify-center gap-2"><Home size={14} /> Home</Link>

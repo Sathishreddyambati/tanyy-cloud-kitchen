@@ -29,6 +29,7 @@ function generateOrderNumber() {
 function buildWhatsAppMessage({ orderNumber, form, items, subtotal }) {
   const address = [form.house, form.street, form.area, form.landmark && `Near ${form.landmark}`, form.city, form.state, form.pincode]
     .filter(Boolean).join(', ');
+  const trackUrl = `${window.location.origin}/track/${orderNumber}`;
   const cp = (n) => String.fromCodePoint(n);
   const E = {
     alert:   cp(0x1F6A8), // 🚨
@@ -41,6 +42,7 @@ function buildWhatsAppMessage({ orderNumber, form, items, subtotal }) {
     money:   cp(0x1F4B0), // 💰
     card:    cp(0x1F4B3), // 💳
     memo:    cp(0x1F4DD), // 📝
+    link:    cp(0x1F517), // 🔗
     rupee:   cp(0x20B9),  // ₹
     times:   cp(0x00D7),  // ×
   };
@@ -57,6 +59,8 @@ function buildWhatsAppMessage({ orderNumber, form, items, subtotal }) {
   lines.push('');
   lines.push(`${E.money} Total: ${E.rupee}${subtotal}`);
   lines.push(`${E.card} Payment: Cash on Delivery`);
+  lines.push('');
+  lines.push(`${E.link} Track your order: ${trackUrl}`);
   if (form.notes) {
     lines.push('');
     lines.push(`${E.memo} Notes: ${form.notes}`);
