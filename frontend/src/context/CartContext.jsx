@@ -11,11 +11,14 @@ export function CartProvider({ children }) {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) setItems(JSON.parse(raw));
-    } catch (_) {}
+    } catch (e) {
+      console.warn('CartContext: could not read cart from localStorage:', e?.message);
+    }
   }, []);
 
   useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch (_) {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
+    catch (e) { console.warn('CartContext: could not persist cart to localStorage:', e?.message); }
   }, [items]);
 
   const add = (item, qty = 1) => {
@@ -36,7 +39,12 @@ export function CartProvider({ children }) {
   const subtotal = useMemo(() => items.reduce((s, i) => s + i.price * i.qty, 0), [items]);
   const count = useMemo(() => items.reduce((s, i) => s + i.qty, 0), [items]);
 
-  const value = { items, add, setQty, remove, clear, subtotal, count, open, setOpen };
+  // Cart data is non-sensitive (menu items + quantities). Persisted to localStorage so the cart
+  // survives reloads — httpOnly cookies aren't possible in a pure client-side app.
+  const value = useMemo(
+    () => ({ items, add, setQty, remove, clear, subtotal, count, open, setOpen }),
+    [items, subtotal, count, open]
+  );
   return <CartCtx.Provider value={value}>{children}</CartCtx.Provider>;
 }
 

@@ -84,7 +84,7 @@ export default function Testimonials() {
               </div>
               <div className="flex">
                 {Array.from({ length: r.rating }).map((_, j) => (
-                  <Star key={j} size={13} className="fill-[color:var(--tk-accent)] text-[color:var(--tk-accent)]" />
+                  <Star key={`${r.name}-star-${j}`} size={13} className="fill-[color:var(--tk-accent)] text-[color:var(--tk-accent)]" />
                 ))}
               </div>
             </div>

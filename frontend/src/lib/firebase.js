@@ -2,21 +2,23 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, doc, addDoc, getDocs, updateDoc, deleteDoc, query, orderBy, where, limit, serverTimestamp, runTransaction } from 'firebase/firestore';
 import { getAnalytics, isSupported } from 'firebase/analytics';
 
+// Firebase web config values are safe to expose (they identify the project, not authenticate it —
+// data access is controlled by Firestore Security Rules). We still load them from env for cleanliness.
 const firebaseConfig = {
-  apiKey: 'AIzaSyAP3sb6Ot5ISGBiAGeVkIKdKkmlU7X2HdU',
-  authDomain: 'tanyy-cloud-kitchen.firebaseapp.com',
-  projectId: 'tanyy-cloud-kitchen',
-  storageBucket: 'tanyy-cloud-kitchen.firebasestorage.app',
-  messagingSenderId: '102165029082',
-  appId: '1:102165029082:web:b9edfe893349decc3085e3',
-  measurementId: 'G-R8HNHYPF1X',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 // Analytics only in browsers that support it
-isSupported().then((ok) => { if (ok) getAnalytics(app); }).catch(() => {});
+isSupported().then((ok) => { if (ok) getAnalytics(app); }).catch((e) => console.warn('Analytics init skipped:', e?.message));
 
 const withTimeout = (p, ms) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error('timeout')), ms))]);
 

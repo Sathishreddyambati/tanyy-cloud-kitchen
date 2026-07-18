@@ -8,7 +8,8 @@ export default function SuccessPage() {
   const order = params.get('order') || 'TK100000';
   const [waUrl, setWaUrl] = useState('');
   useEffect(() => {
-    try { setWaUrl(sessionStorage.getItem('tanyy_last_wa') || ''); } catch (_) {}
+    try { setWaUrl(sessionStorage.getItem('tanyy_last_wa') || ''); }
+    catch (e) { console.warn('SuccessPage: could not read stored WhatsApp URL:', e?.message); }
   }, []);
 
   return (

@@ -127,11 +127,13 @@ export default function CheckoutPage() {
 
     // 5. Clear cart and stash a WhatsApp URL for the success page to auto-retrigger
     clear();
-    try { sessionStorage.setItem('tanyy_last_wa', waUrl); } catch (_) {}
+    try { sessionStorage.setItem('tanyy_last_wa', waUrl); }
+    catch (e) { console.warn('Checkout: could not stash WhatsApp URL for success page:', e?.message); }
 
     if (isMobile) {
       // Push /success into history so the browser back-button from WhatsApp lands on the success page.
-      try { window.history.pushState({}, '', `/success?order=${orderNumber}`); } catch (_) {}
+      try { window.history.pushState({}, '', `/success?order=${orderNumber}`); }
+      catch (e) { console.warn('Checkout: history.pushState failed:', e?.message); }
       // Same-tab redirect — the ONLY reliable way to open the WhatsApp app on mobile.
       window.location.href = waUrl;
       return;

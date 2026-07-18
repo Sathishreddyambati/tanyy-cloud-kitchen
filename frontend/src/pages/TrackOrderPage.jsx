@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Clock, ChefHat, Bike, PackageCheck, XCircle, RefreshCw, Phone, MessageCircle, MapPin } from 'lucide-react';
@@ -24,21 +24,21 @@ export default function TrackOrderPage() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     setNotFound(false);
     const o = await fetchOrderByNumber(orderId);
     if (!o) setNotFound(true);
     setOrder(o);
     setLoading(false);
-  };
-
-  useEffect(() => { if (orderId) load(); /* eslint-disable-next-line */ }, [orderId]);
-  useEffect(() => {
-    const t = setInterval(() => { if (orderId) load(); }, 20000);
-    return () => clearInterval(t);
-    // eslint-disable-next-line
   }, [orderId]);
+
+  useEffect(() => { if (orderId) load(); }, [orderId, load]);
+  useEffect(() => {
+    if (!orderId) return undefined;
+    const t = setInterval(() => { load(); }, 20000);
+    return () => clearInterval(t);
+  }, [orderId, load]);
 
   const cancelled = order?.status === 'Cancelled';
   const activeIdx = order ? statusIndex(order.status) : 0;

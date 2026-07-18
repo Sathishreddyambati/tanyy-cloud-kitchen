@@ -69,9 +69,9 @@ export default function Hero() {
       <div className="border-y border-[color:var(--tk-border)] py-4 overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap">
           {Array.from({ length: 2 }).map((_, r) => (
-            <div key={r} className="flex items-center gap-10 pr-10 text-sm uppercase tracking-[0.3em] text-[color:var(--tk-text-soft)]">
-              {['Fresh Ingredients', 'Hygienic Kitchen', 'Homestyle Cooking', 'Free Delivery', 'Freshly Cooked', 'Premium Quality', 'Made with Love'].map((t, i) => (
-                <span key={`${r}-${i}`} className="flex items-center gap-10">
+            <div key={`marquee-row-${r}`} className="flex items-center gap-10 pr-10 text-sm uppercase tracking-[0.3em] text-[color:var(--tk-text-soft)]">
+              {['Fresh Ingredients', 'Hygienic Kitchen', 'Homestyle Cooking', 'Free Delivery', 'Freshly Cooked', 'Premium Quality', 'Made with Love'].map((t) => (
+                <span key={`${r}-${t}`} className="flex items-center gap-10">
                   <span>{t}</span>
                   <span className="text-[color:var(--tk-accent)]">✦</span>
                 </span>

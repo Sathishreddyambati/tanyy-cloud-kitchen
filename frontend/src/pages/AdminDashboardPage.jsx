@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { fetchOrders, updateOrderStatus, removeOrder } from '@/lib/firebase';
 import { useAuth } from '@/context/AuthContext';
@@ -27,12 +27,13 @@ export default function AdminDashboardPage() {
   const [q, setQ] = useState('');
   const [filter, setFilter] = useState('all');
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
-    try { setOrders(await fetchOrders()); } catch (e) { console.warn(e); toast.error('Could not load orders'); }
+    try { setOrders(await fetchOrders()); }
+    catch (e) { console.warn('AdminDashboard: fetchOrders failed:', e?.message); toast.error('Could not load orders'); }
     setLoading(false);
-  };
-  useEffect(() => { if (isAdmin) load(); }, [isAdmin]);
+  }, []);
+  useEffect(() => { if (isAdmin) load(); }, [isAdmin, load]);
 
   const filtered = useMemo(() => orders.filter((o) => {
     const matchQ = !q || [o.orderNumber, o.customer?.name, o.customer?.phone].join(' ').toLowerCase().includes(q.toLowerCase());
@@ -140,7 +141,7 @@ export default function AdminDashboardPage() {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie data={popularItems} innerRadius={40} outerRadius={70} dataKey="value" nameKey="name">
-                  {popularItems.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  {popularItems.map((entry) => <Cell key={entry.name} fill={COLORS[popularItems.indexOf(entry) % COLORS.length]} />)}
                 </Pie>
                 <Legend />
               </PieChart>
