@@ -25,7 +25,7 @@ const FAQS = [
   },
   {
     q: 'Is your kitchen FSSAI certified?',
-    a: 'Yes. TANYY Cloud Kitchen is fully FSSAI licensed (Lic. No. 22426573000559). We follow strict hygiene protocols, use fresh ingredients daily, and maintain a spotless kitchen you\'d be proud to eat in.',
+    a: 'Yes. Mother\'s Touch Cloud Kitchen is fully FSSAI licensed (Lic. No. 22426573000559). We follow strict hygiene protocols, use fresh ingredients daily, and maintain a spotless kitchen you\'d be proud to eat in.',
   },
   {
     q: 'Can I cancel or modify my order?',

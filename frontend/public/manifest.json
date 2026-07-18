@@ -1,6 +1,6 @@
 {
-  "short_name": "TANYY",
-  "name": "TANYY CLOUD KITCHEN",
+  "short_name": "Mother's Touch",
+  "name": "Mother's Touch Cloud Kitchen",
   "description": "Homestyle Food, Made with Love",
   "icons": [
     { "src": "/images/flavoured-rice.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }

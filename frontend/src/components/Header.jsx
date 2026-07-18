@@ -17,11 +17,11 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 py-4 flex items-center justify-between">
         <Link to="/" data-testid="brand-link" className="flex items-center gap-3 group">
           <span className="w-10 h-10 rounded-full grid place-items-center border border-[color:var(--tk-accent)]/40 group-hover:rotate-12 transition-transform">
-            <span className="font-serif text-lg text-[color:var(--tk-accent)]">T</span>
+            <span className="font-serif text-lg text-[color:var(--tk-accent)]">M</span>
           </span>
           <div className="leading-none">
-            <div className="font-serif text-xl sm:text-2xl tracking-tight">TANYY</div>
-            <div className="text-[10px] tracking-[0.35em] text-[color:var(--tk-text-soft)]">CLOUD KITCHEN</div>
+            <div className="font-serif text-lg sm:text-xl tracking-tight whitespace-nowrap">Mother's Touch</div>
+            <div className="text-[9px] sm:text-[10px] tracking-[0.35em] text-[color:var(--tk-text-soft)] mt-0.5">CLOUD KITCHEN</div>
           </div>
         </Link>
 

@@ -9,7 +9,7 @@ export default function WhyChooseUs() {
     <section data-testid="why-choose-us" className="mx-auto max-w-7xl px-5 sm:px-8 py-20 sm:py-28">
       <div className="flex items-end justify-between gap-6 flex-wrap">
         <div>
-          <div className="text-xs uppercase tracking-[0.3em] text-[color:var(--tk-accent)]">Why TANYY</div>
+          <div className="text-xs uppercase tracking-[0.3em] text-[color:var(--tk-accent)]">Why Mother's Touch</div>
           <h2 className="mt-3 font-serif text-4xl sm:text-5xl tracking-tight leading-tight max-w-2xl">
             Not just a meal —<br /><span className="font-editorial italic text-[color:var(--tk-text-soft)]">a homestyle ritual.</span>
           </h2>

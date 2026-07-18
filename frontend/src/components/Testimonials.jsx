@@ -35,7 +35,7 @@ const REVIEWS = [
   {
     name: 'Meera Krishnan',
     city: 'Hitech City',
-    text: 'The presentation in the black bowls, the aroma when I opened the box — TANYY treats homestyle food like a luxury dining experience. Loved it.',
+    text: 'The presentation in the black bowls, the aroma when I opened the box — Mother\'s Touch treats homestyle food like a luxury dining experience. Loved it.',
     rating: 5,
   },
 ];

@@ -7,8 +7,8 @@ export default function Footer() {
     <footer data-testid="site-footer" className="mt-24 border-t border-[color:var(--tk-border)]">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 py-14 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
-          <div className="font-serif text-3xl">TANYY</div>
-          <div className="tracking-[0.35em] text-xs text-[color:var(--tk-text-soft)] mt-1">CLOUD KITCHEN</div>
+          <div className="font-serif text-3xl sm:text-4xl leading-none">Mother's Touch</div>
+          <div className="tracking-[0.35em] text-xs text-[color:var(--tk-text-soft)] mt-2">CLOUD KITCHEN</div>
           <p className="mt-5 font-editorial text-2xl max-w-md leading-snug">"Homestyle Food, Made with Love."</p>
           <div className="mt-6 flex items-center gap-3">
             <a href={`tel:${PHONE_NUMBER}`} data-testid="footer-call" className="w-10 h-10 rounded-full grid place-items-center border border-[color:var(--tk-border)] hover:border-[color:var(--tk-accent)]"><Phone size={16} /></a>
@@ -35,7 +35,7 @@ export default function Footer() {
       <div className="border-t border-[color:var(--tk-border)]">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 py-5 text-xs text-[color:var(--tk-text-soft)] flex flex-col sm:flex-row justify-between gap-3 items-start sm:items-center">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-            <div>© {new Date().getFullYear()} TANYY CLOUD KITCHEN. All rights reserved.</div>
+            <div>© {new Date().getFullYear()} Mother's Touch Cloud Kitchen. All rights reserved.</div>
             <div className="hidden sm:block h-3 w-px bg-[color:var(--tk-border)]" />
             <div data-testid="fssai-badge" className="inline-flex items-center gap-2">
               <span className="w-4 h-4 rounded-full grid place-items-center bg-[color:var(--tk-accent)]/20 text-[color:var(--tk-accent)] text-[9px] font-bold">✓</span>
