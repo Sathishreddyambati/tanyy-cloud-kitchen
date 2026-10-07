@@ -59,12 +59,20 @@ export async function saveOrder(order) {
 
 export async function fetchOrders() {
   try {
-    const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'));
-    const snap = await withTimeout(getDocs(q), 5000);
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    const q = query(
+      collection(db, 'orders'),
+      orderBy('createdAt', 'desc')
+    );
+
+    const snap = await withTimeout(getDocs(q), 10000);
+
+    return snap.docs.map((d) => ({
+      id: d.id,
+      ...d.data()
+    }));
   } catch (e) {
-    console.warn('fetchOrders fallback:', e?.message);
-    return [];
+    console.error('fetchOrders failed:', e);
+    throw e;
   }
 }
 
