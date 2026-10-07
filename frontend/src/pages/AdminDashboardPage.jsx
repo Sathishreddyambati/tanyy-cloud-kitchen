@@ -28,11 +28,19 @@ export default function AdminDashboardPage() {
   const [filter, setFilter] = useState('all');
 
   const load = useCallback(async () => {
-    setLoading(true);
-    try { setOrders(await fetchOrders()); }
-    catch (e) { console.warn('AdminDashboard: fetchOrders failed:', e?.message); toast.error('Could not load orders'); }
+  setLoading(true);
+
+  try {
+    const data = await fetchOrders();
+    setOrders(data);
+  } catch (e) {
+    console.error('AdminDashboard: fetchOrders failed:', e);
+    toast.error(`Could not load orders: ${e?.message || 'Unknown error'}`);
+    setOrders([]);
+  } finally {
     setLoading(false);
-  }, []);
+  }
+}, []);
   useEffect(() => { if (isAdmin) load(); }, [isAdmin, load]);
 
   const filtered = useMemo(() => orders.filter((o) => {
