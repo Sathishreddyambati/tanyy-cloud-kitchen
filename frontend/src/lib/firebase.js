@@ -48,11 +48,12 @@ export async function saveOrder(order) {
       ...order,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
-    }), 4000);
+    }), 10000);
+
     return ref.id;
   } catch (e) {
-    console.warn('saveOrder fallback:', e?.message);
-    return null;
+    console.error('saveOrder failed:', e);
+    throw e;
   }
 }
 
