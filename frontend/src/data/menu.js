@@ -30,5 +30,5 @@ export const FEATURES = [
   { title: 'Freshly Cooked', copy: 'Every order is prepared after you order.', icon: 'Flame' },
 ];
 
-export const WHATSAPP_NUMBER = '916305587822';
-export const PHONE_NUMBER = '6305587822';
+export const WHATSAPP_NUMBER = '918247231002';
+export const PHONE_NUMBER = '8247231002';
