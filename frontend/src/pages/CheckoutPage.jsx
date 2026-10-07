@@ -123,7 +123,13 @@ export default function CheckoutPage() {
       notes: form.notes || '',
       estimatedDelivery: '35–45 min',
     };
-    saveOrder(orderData).catch(() => {});
+    saveOrder(orderData)
+  .then(() => {
+    console.log('Order saved successfully:', orderNumber);
+  })
+  .catch((error) => {
+    console.error('Order could not be saved:', error);
+  });
 
     // 5. Clear cart and stash a WhatsApp URL for the success page to auto-retrigger
     clear();
